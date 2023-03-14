@@ -494,6 +494,17 @@ Example:
            configText = this.$.configText.value;
         let config = JSON.parse(configText);
         const globalOptionsBackup = JSON.parse(JSON.stringify(this.config.globalOptions));
+        // Set default ws url and colladaServer according to URL params 'baseurl'
+        // A feature for jupyterhub or other services not running locally or on the root path
+        const baseUrl = new URLSearchParams(document.location.search).get("baseurl");
+        if (baseUrl) {
+          const wsUrl = new URL(baseUrl);
+          wsUrl.protocol = wsUrl.protocol === 'https:' ? 'wss:' : 'ws'
+          config.globalOptions['url'] = config.globalOptions['url'] || wsUrl + 'proxy/9090'
+          config.globalOptions['colladaServer'] = config.globalOptions['colladaServer'] || baseUrl + 'proxy/8001'
+          config.globalOptions['videoServer'] = config.globalOptions['videoServer'] || baseUrl + 'proxy/9999'
+        }
+      
         // Restore keys that are empty or not defined.
         Object.keys(globalOptionsBackup).forEach(function(key, index) {
           if (!config.globalOptions[key]) {
