@@ -500,7 +500,7 @@ Example:
         if (baseUrl) {
           const wsUrl = new URL(baseUrl);
           wsUrl.protocol = wsUrl.protocol === 'https:' ? 'wss:' : 'ws'
-          config.globalOptions['url'] = config.globalOptions['url'] || wsUrl + 'proxy/9090'
+          config.globalOptions['url'] = config.globalOptions['url'] || wsUrl.href + 'proxy/9090'
           config.globalOptions['colladaServer'] = config.globalOptions['colladaServer'] || baseUrl + 'proxy/8001'
           config.globalOptions['videoServer'] = config.globalOptions['videoServer'] || baseUrl + 'proxy/9999'
         }
