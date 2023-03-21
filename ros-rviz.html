@@ -39,14 +39,17 @@ Example:
         height: 100%;
         @apply(--paper-font-common-base);
       }
+
       #displays {
         background-color: var(--paper-grey-50);
         color: rgba(0, 0, 0, 0.87)
       }
+
       #displayHeader {
         background-color: var(--paper-grey-300);
         color: rgba(0, 0, 0, 0.87);
       }
+
       #addButton {
         color: rgba(0, 0, 0, 0.87);
         background-color: #ffc107;
@@ -54,42 +57,54 @@ Example:
         top: 28px;
         z-index: 2;
       }
+
       #container {
         height: 100%;
       }
+
       #sidebar {
         height: 100%;
         display: block;
       }
+
       #displays {
         width: 300px;
         height: 100%;
       }
+
       #viewer {
         overflow: hidden;
         width: 100%;
         height: 100%;
       }
+
       #openDisplays {
         position: absolute;
         margin: 10px;
         color: rgba(255, 255, 255, 0.87);
         background-color: rgba(255, 255, 255, 0.2);
       }
+
       #openDisplays:hover {
         background-color: rgba(255, 255, 255, 0.3);
       }
+
       paper-item {
         --paper-item: {
           cursor: pointer;
-        };
+        }
+
+        ;
       }
+
       [hidden] {
         display: none;
       }
+
       paper-button {
         @apply(--paper-font-button);
       }
+
       paper-dialog {
         max-width: 900px;
         width: 90%;
@@ -97,9 +112,11 @@ Example:
         padding: 0px 24px;
         margin-top: 0;
       }
+
       span[main-title] {
         @apply(--paper-font-title);
       }
+
       #displayPaperMenu {
         min-width: 200px;
       }
@@ -109,17 +126,14 @@ Example:
         <app-header-layout id="displays" has-scrolling-region>
           <app-header slot="header" fixed id="displayHeader">
             <app-toolbar>
-              <paper-icon-button id="closeDisplays" icon="arrow-back"
-                on-tap="_toggleDisplayList"></paper-icon-button>
-              <paper-tooltip position="right" animation-delay="0"
-                for="closeDisplays">Hide displays panel</paper-tooltip>
+              <paper-icon-button id="closeDisplays" icon="arrow-back" on-tap="_toggleDisplayList"></paper-icon-button>
+              <paper-tooltip position="right" animation-delay="0" for="closeDisplays">Hide displays
+                panel</paper-tooltip>
               <span main-title>Displays</span>
-              <paper-tooltip position="bottom" animation-delay="0"
-                for="addButton">Add a display</paper-tooltip>
+              <paper-tooltip position="bottom" animation-delay="0" for="addButton">Add a display</paper-tooltip>
               <paper-menu-button id="displayMenu">
                 <paper-fab icon="add" id="addButton" slot="dropdown-trigger"></paper-fab>
-                <paper-listbox id="displayPaperMenu" slot="dropdown-content"
-                    on-tap="_onDisplaySelected">
+                <paper-listbox id="displayPaperMenu" slot="dropdown-content" on-tap="_onDisplaySelected">
                   <paper-item on-tap="addDepthCloud">Depth cloud</paper-item>
                   <paper-item on-tap="addGrid">Grid</paper-item>
                   <paper-item on-tap="addImage">Image</paper-item>
@@ -137,34 +151,20 @@ Example:
           </app-header>
           <paper-button on-tap="_showConfig">Load config</paper-button>
           <div id="displayList">
-            <ros-rviz-display
-              id="options"
-              global-options="{{config.globalOptions}}"
-              name="Global options"
-              permanent
-              type="globalOptions"
-            ></ros-rviz-display>
+            <ros-rviz-display id="options" global-options="{{config.globalOptions}}" name="Global options" permanent
+              type="globalOptions"></ros-rviz-display>
             <template is="dom-repeat" items="{{config.displays}}" as="display">
-              <ros-rviz-display
-                global-options="{{config.globalOptions}}"
-                index="{{index}}"
-                is-shown="{{display.isShown}}"
-                on-delete-display="_deleteDisplay"
-                viewer="{{_viewer}}"
-                ros="{{ros}}"
-                tf-client="{{_tfClient}}"
-                name="{{display.name}}"
-                options="{{display.options}}"
-                type="{{display.type}}"
-              ></ros-rviz-display>
+              <ros-rviz-display global-options="{{config.globalOptions}}" index="{{index}}"
+                is-shown="{{display.isShown}}" on-delete-display="_deleteDisplay" viewer="{{_viewer}}" ros="{{ros}}"
+                tf-client="{{_tfClient}}" name="{{display.name}}" options="{{display.options}}"
+                type="{{display.type}}"></ros-rviz-display>
             </template>
           </div>
         </app-header-layout>
       </iron-collapse>
-      <paper-fab icon="menu" id="openDisplays"
-        hidden$="{{config.sidebarOpened}}" on-tap="_toggleDisplayList"></paper-fab>
-      <paper-tooltip position="right" animation-delay="0"
-        for="openDisplays">Open displays</paper-tooltip>
+      <paper-fab icon="menu" id="openDisplays" hidden$="{{config.sidebarOpened}}"
+        on-tap="_toggleDisplayList"></paper-fab>
+      <paper-tooltip position="right" animation-delay="0" for="openDisplays">Open displays</paper-tooltip>
       <div id="viewer" class="flex">
       </div>
       <paper-dialog id="configDialog" modal class="layout vertical">
@@ -189,7 +189,7 @@ Example:
         config: {
           notify: true,
           type: Object,
-          value: function() {
+          value: function () {
             return {
               globalOptions: {},
               sidebarOpened: true,
@@ -240,29 +240,29 @@ Example:
       // the two-way binding we manually add here.
 
       // If the property changes, mirror to config.
-      _websocketUrlChanged: function(url) {
+      _websocketUrlChanged: function (url) {
         this.set('config.globalOptions.url', url);
       },
       // If the config changes, mirror to property.
-      _globalWebsocketUrlChanged: function(url) {
+      _globalWebsocketUrlChanged: function (url) {
         this.websocketUrl = url;
       },
 
-      _backgroundChanged: function(background) {
+      _backgroundChanged: function (background) {
         if (background && this._viewer) {
           this._viewer.renderer.setClearColor(parseInt(background.replace('#', '0x'), 16), 1);
         }
       },
 
-      _fixedFrameChanged: function(fixedFrame) {
+      _fixedFrameChanged: function (fixedFrame) {
         if (this._tfClient) {
           this._tfClient.fixedFrame = fixedFrame;
           this._tfClient.updateGoal();
         }
       },
 
-      attached: function() {
-        Polymer.RenderStatus.beforeNextRender(this, function() {
+      attached: function () {
+        Polymer.RenderStatus.beforeNextRender(this, function () {
           if (this._attached) {
             return;
           }
@@ -274,7 +274,7 @@ Example:
           // to the shadow root temporarily.
           var backupFunc = document.getElementById;
           var that = this;
-          document.getElementById = function(id) {
+          document.getElementById = function (id) {
             return that.shadowRoot.getElementById(id);
           }
           this._viewer = new ROS3D.Viewer({
@@ -287,18 +287,18 @@ Example:
           document.getElementById = backupFunc;
           this._attached = true;
         });
-        Polymer.RenderStatus.afterNextRender(this, function() {
+        Polymer.RenderStatus.afterNextRender(this, function () {
           var that = this;
-          window.setTimeout(function() {
+          window.setTimeout(function () {
             that.resize()
           }, 100);
-          this.addEventListener('iron-resize', function() {
+          this.addEventListener('iron-resize', function () {
             that.resize();
           });
         });
       },
 
-      addGrid: function() {
+      addGrid: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Grid',
@@ -311,7 +311,7 @@ Example:
         });
       },
 
-      addImage: function() {
+      addImage: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Image',
@@ -322,7 +322,7 @@ Example:
         });
       },
 
-      addInteractiveMarkers: function() {
+      addInteractiveMarkers: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Interactive Markers',
@@ -333,7 +333,7 @@ Example:
         });
       },
 
-      addMarkers: function() {
+      addMarkers: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Markers',
@@ -344,7 +344,7 @@ Example:
         });
       },
 
-      addMarkerArray: function() {
+      addMarkerArray: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Marker array',
@@ -355,7 +355,7 @@ Example:
         });
       },
 
-      addOccupancyGrid: function() {
+      addOccupancyGrid: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Map',
@@ -373,7 +373,7 @@ Example:
         });
       },
 
-      addDepthCloud: function() {
+      addDepthCloud: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Depth cloud',
@@ -385,7 +385,7 @@ Example:
         });
       },
 
-      addPointCloud: function() {
+      addPointCloud: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Point cloud',
@@ -396,7 +396,7 @@ Example:
         });
       },
 
-      addPointCloud2: function() {
+      addPointCloud2: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Point cloud 2',
@@ -408,7 +408,7 @@ Example:
         });
       },
 
-      addTf: function() {
+      addTf: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'TF',
@@ -418,7 +418,7 @@ Example:
         });
       },
 
-      addUrdf: function() {
+      addUrdf: function () {
         this.push('config.displays', {
           isShown: true,
           name: 'Robot model',
@@ -432,7 +432,7 @@ Example:
       /*
        * This method should be called to update the viewer whenever the element is resized.
        */
-      resize: function() {
+      resize: function () {
         if (this._viewer) {
           var width = this.$.viewer.offsetWidth;
           var height = this.$.viewer.offsetHeight;
@@ -440,16 +440,16 @@ Example:
         }
       },
 
-      _deleteDisplay: function(evt) {
+      _deleteDisplay: function (evt) {
         var index = evt.detail.index;
         this.splice('config.displays', index, 1);
       },
 
-      _onDisplaySelected: function() {
+      _onDisplaySelected: function () {
         this.$.displayPaperMenu.selected = undefined;
       },
 
-      _rosChanged: function() {
+      _rosChanged: function () {
         var that = this;
         this._tfClient = new ROSLIB.TFClient({
           ros: this.ros,
@@ -468,7 +468,7 @@ Example:
           name: '/rvizweb/global_config'
         });
 
-        this._configParam.get(function(value) {
+        this._configParam.get(function (value) {
           if (value != null) {
             try {
               that._applyConfigText(value);
@@ -479,34 +479,27 @@ Example:
         });
       },
 
-      _toggleDisplayList: function() {
+      _toggleDisplayList: function () {
         this.$.sidebar.toggle();
       },
 
-      _showConfig: function() {
+      _showConfig: function () {
         this.$.configText.value = JSON.stringify(this.config, null, 2);
         this.$.configDialog.open();
       },
 
-      _applyConfigText: function(inputText) {
+      _applyConfigText: function (inputText) {
         let configText = inputText;
         if (typeof inputText !== 'string')
-           configText = this.$.configText.value;
+          configText = this.$.configText.value;
         let config = JSON.parse(configText);
         const globalOptionsBackup = JSON.parse(JSON.stringify(this.config.globalOptions));
-        // Set default ws url and colladaServer according to URL params 'baseurl'
-        // A feature for jupyterhub or other services not running locally or on the root path
-        const baseUrl = new URLSearchParams(document.location.search).get("baseurl");
-        if (baseUrl) {
-          const wsUrl = new URL(baseUrl);
-          wsUrl.protocol = wsUrl.protocol === 'https:' ? 'wss:' : 'ws'
-          config.globalOptions['url'] = config.globalOptions['url'] || wsUrl.href + 'proxy/9090'
-          config.globalOptions['colladaServer'] = config.globalOptions['colladaServer'] || baseUrl + 'proxy/8001'
-          config.globalOptions['videoServer'] = config.globalOptions['videoServer'] || baseUrl + 'proxy/9999'
-        }
-      
+
+        config = this._applyBaseUrl(config)
+        this._applyViewerOptions(config.viewerOptions)
+
         // Restore keys that are empty or not defined.
-        Object.keys(globalOptionsBackup).forEach(function(key, index) {
+        Object.keys(globalOptionsBackup).forEach(function (key, index) {
           if (!config.globalOptions[key]) {
             config.globalOptions[key] = globalOptionsBackup[key];
           }
@@ -515,6 +508,35 @@ Example:
         this.config = config;
         this.$.configText.value = JSON.stringify(this.config);
       },
+      // Set default ws url and colladaServer according to URL params 'baseurl'
+      // A feature for jupyterhub or other services not running locally or on the root path
+      _applyBaseUrl: function (config) {
+        const baseUrl = new URLSearchParams(document.location.search).get("baseurl");
+        if (baseUrl) {
+          const wsUrl = new URL(baseUrl);
+          wsUrl.protocol = wsUrl.protocol === 'https:' ? 'wss:' : 'ws'
+          config.globalOptions['url'] = config.globalOptions['url'] || wsUrl.href + 'proxy/9090'
+          config.globalOptions['colladaServer'] = config.globalOptions['colladaServer'] || baseUrl + 'proxy/8001'
+          config.globalOptions['videoServer'] = config.globalOptions['videoServer'] || baseUrl + 'proxy/9999'
+        }
+        return config
+      },
+      // Todos: Setting default values
+      _applyViewerOptions: function (opts) {
+        if (!opts) return;
+        function applyOpt (obj, _opt) {
+          let keyArr = Object.keys(_opt)
+          for (let key of keyArr) {
+            if (!obj.hasOwnProperty(key)) break;
+            if (Object.keys(_opt[key]).length === 0) {
+              obj[key] = _opt[key]
+            } else {
+              applyOpt(obj[key], _opt[key])
+            }
+          }
+        }
+        applyOpt(this._viewer, opts)
+      }
     });
   </script>
 </dom-module>
