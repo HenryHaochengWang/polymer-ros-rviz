@@ -462,7 +462,21 @@ Example:
         if (this.initialized)
           return;
         this.initialized = true;
+  
+        var listener = new ROSLIB.Topic({
+          ros : this.ros,
+          name : '/rvizweb/global_config',
+          messageType : 'std_msgs/String'
+        });
 
+        listener.subscribe(function(message) {
+          console.log(message);
+          that._getConfig()
+        });
+        this._getConfig()
+      },
+      _getConfig: function () {
+        var that = this;
         this._configParam = new ROSLIB.Param({
           ros: this.ros,
           name: '/rvizweb/global_config'
@@ -521,7 +535,7 @@ Example:
         }
         return config
       },
-      // Todos: Setting default values
+      // Apply 3d scene config
       _applyViewerOptions: function (opts) {
         if (!opts) return;
         function applyOpt (obj, _opt) {

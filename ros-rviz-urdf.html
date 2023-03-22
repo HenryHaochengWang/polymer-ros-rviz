@@ -85,7 +85,10 @@
             path: that.globalOptions.colladaServer,
             tfClient: that.tfClient,
             tfPrefix: that.tfPrefix,
-            loader: loader
+            loader: loader,
+            defaultColorMaterialFuc: function() {
+              return ROS3D.makeColorMaterial(0.6, 0, 0, 0.8); 
+            }
           });
           callback && callback();
         });
