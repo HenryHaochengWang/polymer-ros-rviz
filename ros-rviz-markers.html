@@ -75,19 +75,18 @@
       },
 
       _msgCallback: function(that, message) {
-        var loader = ROS3D.COLLADA_LOADER;
+        var oldNode = that._markers[message.ns + message.id];
+        if (oldNode) {
+          oldNode.children[0].setPose(message.pose);
+          return
+        }
 
+        var loader = ROS3D.COLLADA_LOADER;
         var newMarker = new ROS3D.Marker({
           message: message,
           path: that.globalOptions.colladaServer,
           loader: loader
         });
-
-        var oldNode = that._markers[message.ns + message.id];
-        if (oldNode) {
-          oldNode.unsubscribeTf();
-          that.viewer.scene.remove(oldNode);
-        }
 
         that._markers[message.ns + message.id] = new ROS3D.SceneNode({
           frameID: message.header.frame_id,
