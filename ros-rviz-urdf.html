@@ -87,11 +87,11 @@
             tfPrefix: that.tfPrefix,
             loader: loader,
             defaultColorMaterialFuc: function () {
-              let rFunc = Math.random
-              let color = new THREE.Color(rFunc(), rFunc(), rFunc());
+              // let rFunc = Math.random
+              // let color = new THREE.Color(rFunc(), rFunc(), rFunc());
               // let mtl = new THREE.MeshBasicMaterial({
               //   color: color.getHex(),
-              //   opacity: 0.9,
+              //   opacity: 0.5,
               //   transparent: true,
               //   depthWrite: true,
               //   wireframe: true,
@@ -100,8 +100,8 @@
               //   blendEquation: THREE.ReverseSubtractEquation,
               //   blending: THREE.NormalBlending
               // });
-              let mtl = new ROS3D.makeColorMaterial(rFunc(), rFunc(), rFunc(), 1)
-              return mtl
+              // let mtl = new ROS3D.makeColorMaterial(rFunc(), rFunc(), rFunc(), 1)
+              return new ROS3D.makeColorMaterial(1,1,1, 0.8)
             }
           });
           callback && callback();
