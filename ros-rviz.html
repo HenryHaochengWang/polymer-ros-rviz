@@ -78,14 +78,28 @@ Example:
         height: 100%;
       }
 
-      #openDisplays {
+      #openDisplays,
+      #refreshPage,
+      #openNewTab {
         position: absolute;
         margin: 10px;
         color: rgba(255, 255, 255, 0.87);
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.33);
       }
-
-      #openDisplays:hover {
+      #leftButtons{
+        position: absolute;
+        right: 0;
+        display: flex;
+      }
+      #refreshPage {
+        position: relative;
+      }
+      #openNewTab {
+        position: relative;
+      }
+      #openDisplays:hover
+      #refreshPage:hover
+      #openNewTab:hover {
         background-color: rgba(255, 255, 255, 0.3);
       }
 
@@ -165,6 +179,16 @@ Example:
       <paper-fab icon="menu" id="openDisplays" hidden$="{{config.sidebarOpened}}"
         on-tap="_toggleDisplayList"></paper-fab>
       <paper-tooltip position="right" animation-delay="0" for="openDisplays">Open displays</paper-tooltip>
+
+      <div id="leftButtons">
+        <paper-fab  icon="refresh" id="refreshPage" hidden$="{{notIframe}}"
+          on-tap="_refreshPage"></paper-fab>
+        <paper-tooltip position="bottom" animation-delay="0" for="refreshPage">Refresh</paper-tooltip>
+        <paper-fab icon="fullscreen" id="openNewTab" hidden$="{{notIframe}}"
+          on-tap="_openNewTab"></paper-fab>
+        <paper-tooltip position="bottom" animation-delay="0" for="openNewTab">New Window</paper-tooltip>
+      </div>
+
       <div id="viewer" class="flex">
       </div>
       <paper-dialog id="configDialog" modal class="layout vertical">
@@ -186,6 +210,10 @@ Example:
          * A JSON object that specifies the configuration of the visualization.
          * See the user guide for more details.
          */
+        notIframe: {
+          type: Boolean,
+          value: window.self === window.top
+        },
         config: {
           notify: true,
           type: Object,
@@ -495,6 +523,12 @@ Example:
 
       _toggleDisplayList: function () {
         this.$.sidebar.toggle();
+      },
+      _refreshPage: function () {
+        document.location.reload();
+      },
+      _openNewTab: function () {
+        window.open(window.location.href, '_blank').focus();
       },
 
       _showConfig: function () {

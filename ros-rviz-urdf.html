@@ -87,21 +87,29 @@
             tfPrefix: that.tfPrefix,
             loader: loader,
             defaultColorMaterialFuc: function () {
-              // let rFunc = Math.random
-              // let color = new THREE.Color(rFunc(), rFunc(), rFunc());
-              // let mtl = new THREE.MeshBasicMaterial({
-              //   color: color.getHex(),
-              //   opacity: 0.5,
-              //   transparent: true,
-              //   depthWrite: true,
-              //   wireframe: true,
-              //   blendSrc: THREE.SrcAlphaFactor,
-              //   blendDst: THREE.OneMinusSrcAlphaFactor,
-              //   blendEquation: THREE.ReverseSubtractEquation,
-              //   blending: THREE.NormalBlending
-              // });
-              // let mtl = new ROS3D.makeColorMaterial(rFunc(), rFunc(), rFunc(), 1)
-              return new ROS3D.makeColorMaterial(1,1,1, 0.8)
+              let colorStr = that.globalOptions.defaultColorMaterial
+              let defalutAlpha = 0.8
+              // Random color 
+              if (!!~colorStr.toLowerCase().indexOf('random')) {
+                let rFunc = Math.random
+                let alpha = parseFloat(colorStr.toLowerCase().split('random')[1])
+                alpha = isNaN(alpha) ? defalutAlpha : alpha
+                return new ROS3D.makeColorMaterial(rFunc(), rFunc(), rFunc(), alpha)
+              }
+
+              // Hex value
+              if (colorStr.startsWith("#")) {
+                let hexColor = colorStr.slice(1);
+                let red = parseInt(hexColor.substr(0, 2), 16);
+                let green = parseInt(hexColor.substr(2, 2), 16);
+                let blue = parseInt(hexColor.substr(4, 2), 16);
+                let alpha = parseInt(hexColor.substr(6, 2), 16) / 255;
+                alpha = isNaN(alpha)? defalutAlpha : alpha
+                return new ROS3D.makeColorMaterial(red, green, blue, alpha)
+              }
+
+              // Default is white
+              return new ROS3D.makeColorMaterial(1, 1, 1, defalutAlpha)
             }
           });
           callback && callback();
