@@ -87,7 +87,7 @@
             tfPrefix: that.tfPrefix,
             loader: loader,
             defaultColorMaterialFuc: function () {
-              let colorStr = that.globalOptions.defaultColorMaterial
+              let colorStr = that.globalOptions.defaultColorMaterial || ''
               let defalutAlpha = 0.8
               // Random color 
               if (!!~colorStr.toLowerCase().indexOf('random')) {
