@@ -100,9 +100,9 @@
               // Hex value
               if (colorStr.startsWith("#")) {
                 let hexColor = colorStr.slice(1);
-                let red = parseInt(hexColor.substr(0, 2), 16);
-                let green = parseInt(hexColor.substr(2, 2), 16);
-                let blue = parseInt(hexColor.substr(4, 2), 16);
+                let red = parseInt(hexColor.substr(0, 2), 16) / 255;
+                let green = parseInt(hexColor.substr(2, 2), 16) / 255;
+                let blue = parseInt(hexColor.substr(4, 2), 16) / 255;
                 let alpha = parseInt(hexColor.substr(6, 2), 16) / 255;
                 alpha = isNaN(alpha)? defalutAlpha : alpha
                 return new ROS3D.makeColorMaterial(red, green, blue, alpha)
