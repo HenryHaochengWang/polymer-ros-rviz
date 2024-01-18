@@ -499,7 +499,8 @@ Example:
 
         listener.subscribe(function(message) {
           console.log(message);
-          that._getConfig()
+          // that._getConfig()
+          document.location.reload();
         });
         this._getConfig()
       },
